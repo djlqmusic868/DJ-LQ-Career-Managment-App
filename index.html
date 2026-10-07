@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DJ LQ — Career Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #f59e0b; /* Vinyl Gold */
+            --accent-hover: #d97706;
+            --neon-pink: #ec4899;
+            --neon-cyan: #06b6d4;
+            --danger: #ef4444;
+            --success: #10b981;
+            --info: #3b82f6;
+            --gradient-brand: linear-gradient(135deg, #f59e0b 0%, #ec4899 50%, #06b6d4 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.05) 0%, transparent 40%);
+        }
+
+        /* Mobile Header Bar */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .mobile-header h2 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.1rem;
+            background: var(--gradient-brand);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .menu-toggle-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        /* Sidebar Styling */
+        sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            overflow-y: auto;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.02);
+            z-index: 101;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .brand {
+            text-align: center;
+            padding-bottom: 16px;
+            border-bottom: 2px dashed var(--border-color);
+        }
+
+        .brand h2 {
+            font-family: 'Syncopate', sans-serif;
+            color: #0f172a;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: var(--gradient-brand);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            text-align: left;
+            padding: 11px 14px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--accent);
+            transform: translateX(4px);
+        }
+
+        .nav-btn.active {
+            background: var(--gradient-brand);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Cloud Sync Status Widget */
+        .cloud-sync-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            font-size: 0.75rem;
+        }
+
+        /* Social Hub Sidebar Widget */
+        .social-hub {
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+            margin-top: 12px;
+        }
+
+        .social-hub h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .social-link {
+            color: var(--text-main);
+            font-size: 0.78rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .social-link:hover {
+            background-color: rgba(6, 182, 212, 0.1);
+            color: var(--neon-cyan);
+            padding-left: 10px;
+        }
+
+        /* Main Content Layout */
+        main {
+            flex-grow: 1;
+            padding: 32px 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+        }
+
+        .btn {
+            background: var(--gradient-brand);
+            color: #ffffff;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards & Grids */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--gradient-brand);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .badge {
+            font-size: 0.68rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-confirmed { background-color: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .badge-pending { background-color: rgba(245, 158, 11, 0.1); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.2); }
+        .badge-lead { background-color: rgba(6, 182, 212, 0.1); color: var(--info); border: 1px solid rgba(6, 182, 212, 0.2); }
+
+        .card-body p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .card-body strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .financial-row {
+            display: flex;
+            justify-content: space-between;
+            background: #f8fafc;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            margin-top: 6px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn-edit { color: var(--info); }
+        .btn-edit:hover { opacity: 0.8; text-decoration: underline; }
+        .btn-delete { color: var(--danger); }
+        .btn-delete:hover { opacity: 0.8; text-decoration: underline; }
+
+        /* Modal Form */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 20px;
+            padding: 24px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal h3 {
+            margin-bottom: 20px;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-secondary:hover {
+            background: #f1f5f9;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                height: 100vh;
+                overflow: auto;
+            }
+
+            .mobile-header {
+                display: flex;
+            }
+
+            sidebar {
+                position: fixed;
+                top: 60px;
+                left: -100%;
+                width: 280px;
+                height: calc(100vh - 60px);
+                transition: left 0.3s ease-in-out;
+                background: #ffffff;
+            }
+
+            sidebar.open {
+                left: 0;
+            }
+
+            main {
+                padding: 80px 16px 24px 16px;
+                height: auto;
+                overflow: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-header">
+        <h2>DJ LQ</h2>
+        <button class="menu-toggle-btn" onclick="toggleMobileMenu()">☰</button>
+    </div>
+
+    <sidebar id="app-sidebar">
+        <div>
+            <div class="brand">
+                <h2>DJ LQ</h2>
+                <p>Career Hub</p>
+            </div>
+            
+            <!-- AI Voice Command Widget -->
+            <div class="cloud-sync-box" style="margin-top: 16px; background: rgba(236, 72, 153, 0.05); border-color: rgba(236, 72, 153, 0.2);">
+                <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between;">
+                    <span>🎙️ AI Voice Assistant</span>
+                    <span id="ai-status" style="font-size: 0.65rem; color: var(--neon-pink); font-weight: 700;">Idle</span>
+                </div>
+                <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;">Say e.g. "Add booking Carnival Fete for 3000 TTD"</p>
+                <button class="btn" onclick="toggleVoiceAssistant()" id="ai-mic-btn" style="width: 100%; padding: 8px; font-size: 0.75rem; background: var(--gradient-brand);">🎤 Start Voice Command</button>
+            </div>
+
+            <!-- Cloud Google Sheets Sync Widget -->
+            <div class="cloud-sync-box">
+                <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between;">
+                    <span>☁️ Google Sheets Sync</span>
+                    <span id="sync-status" style="font-size: 0.65rem; color: var(--success); font-weight: 700;">Ready</span>
+                </div>
+                <input type="text" id="sync-script-url" class="form-control" placeholder="Paste Apps Script Web App URL..." style="font-size: 0.72rem; padding: 6px; margin-bottom: 6px;" value="">
+                <div style="display: flex; gap: 6px;">
+                    <button class="btn" onclick="syncWithGoogleCloud()" style="padding: 6px 10px; font-size: 0.7rem; flex: 1;">🔄 Sync Now</button>
+                    <button class="btn-secondary" onclick="openSyncInstructions()" style="padding: 6px 8px; font-size: 0.7rem;">Help</button>
+                </div>
+            </div>
+
+            <div class="nav-links">
+                <button class="nav-btn active" onclick="switchTab('bookings', this); toggleMobileMenu(true)">🎛️ Active Bookings</button>
+                <button class="nav-btn" onclick="switchTab('history', this); toggleMobileMenu(true)">📜 Booking History & Archive</button>
+                <button class="nav-btn" onclick="switchTab('schedule', this); toggleMobileMenu(true)">📅 Day of Gig</button>
+                <button class="nav-btn" onclick="switchTab('pipeline', this); toggleMobileMenu(true)">🚀 Projected Gigs</button>
+                <button class="nav-btn" onclick="switchTab('packages', this); toggleMobileMenu(true)">📦 Event Packages</button>
+                <button class="nav-btn" onclick="switchTab('finances', this); toggleMobileMenu(true)">💰 Payment Tracking</button>
+                <button class="nav-btn" onclick="switchTab('expenses', this); toggleMobileMenu(true)">💸 Expenses & Overhead</button>
+                <button class="nav-btn" onclick="switchTab('crm', this); toggleMobileMenu(true)">📇 Client Database & CRM</button>
+                <button class="nav-btn" onclick="switchTab('vendors', this); toggleMobileMenu(true)">🤝 Supporting Vendors & Partners</button>
+                <button class="nav-btn" onclick="switchTab('shirts', this); toggleMobileMenu(true)">👕 T-Shirt Sales</button>
+                <button class="nav-btn" onclick="switchTab('tasks', this); toggleMobileMenu(true)">🎧 Studio Tasks</button>
+                <button class="nav-btn" onclick="switchTab('crate', this); toggleMobileMenu(true)">💿 Crate Digging</button>
+                <button class="nav-btn" onclick="switchTab('tricks', this); toggleMobileMenu(true)">💡 Tricks & Ideas</button>
+                <button class="nav-btn" onclick="switchTab('gear', this); toggleMobileMenu(true)">⚡ Gear & Gadgets</button>
+            </div>
+        </div>
+
+        <div class="social-hub">
+            <h4>Social Hub</h4>
+            <div class="social-links">
+                <a href="https://facebook.com/DJLQMusic" target="_blank" class="social-link">🌐 Facebook</a>
+                <a href="https://youtube.com/@djlqmusic868" target="_blank" class="social-link">▶️ YouTube</a>
+                <a href="https://instagram.com/DJLQMusic" target="_blank" class="social-link">📸 Instagram</a>
+                <a href="https://tiktok.com/@DJLQMusic" target="_blank" class="social-link">🎵 TikTok</a>
+                <a href="https://soundcloud.com/DJLQMusic" target="_blank" class="social-link">☁️ SoundCloud</a>
+            </div>
+        </div>
+    </sidebar>
+
+    <main>
+        <!-- TAB 1: ACTIVE BOOKINGS -->
+        <div id="bookings-tab" class="tab-content active">
+            <header>
+                <h1>Active Bookings</h1>
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <button class="btn-secondary" onclick="exportData()" style="padding: 10px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: #ffffff;">📤 Export Data</button>
+                    <label class="btn-secondary" style="padding: 10px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: #ffffff; display: inline-block;">
+                        📥 Import Data <input type="file" id="import-file" accept=".json" onchange="importData(event)" style="display: none;">
+                    </label>
+                    <button class="btn" onclick="openModal('booking')">+ New Booking</button>
+                </div>
+            </header>
+            
+            <div style="display: flex; gap: 16px; margin-bottom: 24px; background: var(--card-bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border-color); flex-wrap: wrap;">
+                <input type="text" id="booking-search" class="form-control" placeholder="🔍 Search by event name, client, or venue..." oninput="renderAll()" style="flex: 2; min-width: 220px;">
+                <select id="booking-filter-type" class="form-control" onchange="renderAll()" style="flex: 1; min-width: 150px;">
+                    <option value="">All Event Types</option>
+                    <option value="Club Night">Club Night</option>
+                    <option value="Private Party">Private Party</option>
+                    <option value="Carnival Fete">Carnival Fete</option>
+                    <option value="Wedding">Wedding</option>
+                    <option value="Corporate">Corporate</option>
+                </select>
+                <select id="booking-filter-deposit" class="form-control" onchange="renderAll()" style="flex: 1; min-width: 150px;">
+                    <option value="">All Payment Statuses</option>
+                    <option value="Pending">Deposit Pending</option>
+                    <option value="Paid">Deposit Paid</option>
+                    <option value="Fully Paid">Fully Paid</option>
+                </select>
+            </div>
+
+            <div id="bookings-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 1.5: BOOKING HISTORY & ARCHIVE -->
+        <div id="history-tab" class="tab-content">
+            <header>
+                <h1>Booking History & Archive</h1>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Automatically archived past gigs, completed profits, and historical notes. Click realized revenue or notes to edit them.</p>
+            </header>
+            
+            <div style="display: flex; gap: 16px; margin-bottom: 24px; background: var(--card-bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border-color); flex-wrap: wrap;">
+                <input type="text" id="history-search" class="form-control" placeholder="🔍 Search past event name, client, or venue..." oninput="renderAll()" style="flex: 1; min-width: 220px;">
+            </div>
+
+            <div id="history-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 2: SCHEDULE MANAGER / DAY OF GIG -->
+        <div id="schedule-tab" class="tab-content">
+            <header>
+                <h1>Day of Gig & Timeline Planner</h1>
+            </header>
+            <div id="schedule-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 3: PROJECTED GIGS -->
+        <div id="pipeline-tab" class="tab-content">
+            <header>
+                <h1>Projected Gigs</h1>
+                <button class="btn" onclick="openModal('pipeline')">+ Add Target Gig</button>
+            </header>
+            <div id="pipeline-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 4: EVENT PACKAGES -->
+        <div id="packages-tab" class="tab-content">
+            <header>
+                <h1>DJ LQ Event Packages & Pricing</h1>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Official service packages from the DJ LQ Entertainment Event Services Agreement</p>
+            </header>
+            <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Package A</span>
+                        <span class="badge badge-confirmed">TTD $3,000</span>
+                    </div>
+                    <div class="card-body">
+                        <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; margin-bottom:8px;">Ideal For: Weddings, Corporate, Graduations</p>
+                        <ul style="padding-left:16px; display:flex; flex-direction:column; gap:6px; font-size:0.85rem; color:var(--text-main);">
+                            <li>DJ & Host/MC Services</li>
+                            <li>Full Premium Speaker System</li>
+                            <li>Premium DJ Equipment</li>
+                            <li>2 Cordless Microphones</li>
+                        </ul>
+                        <div class="financial-row" style="margin-top:14px;">
+                            <span>Deposit Required:</span>
+                            <strong>TTD $1,000</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Package B</span>
+                        <span class="badge badge-confirmed">TTD $2,400</span>
+                    </div>
+                    <div class="card-body">
+                        <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; margin-bottom:8px;">Ideal For: Weddings, Corporate, Parties</p>
+                        <ul style="padding-left:16px; display:flex; flex-direction:column; gap:6px; font-size:0.85rem; color:var(--text-main);">
+                            <li>Professional DJ Services</li>
+                            <li>Full Premium Speaker System</li>
+                            <li>Premium DJ Equipment</li>
+                            <li>2 Cordless Microphones</li>
+                        </ul>
+                        <div class="financial-row" style="margin-top:14px;">
+                            <span>Deposit Required:</span>
+                            <strong>TTD $1,000</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Package C</span>
+                        <span class="badge badge-confirmed">TTD $1,500</span>
+                    </div>
+                    <div class="card-body">
+                        <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; margin-bottom:8px;">Ideal For: Smaller & Intimate Events</p>
+                        <ul style="padding-left:16px; display:flex; flex-direction:column; gap:6px; font-size:0.85rem; color:var(--text-main);">
+                            <li>Professional DJ Services</li>
+                            <li>Small Speaker System</li>
+                            <li>Premium DJ Equipment</li>
+                            <li>1 Cordless Microphone</li>
+                        </ul>
+                        <div class="financial-row" style="margin-top:14px;">
+                            <span>Deposit Required:</span>
+                            <strong>TTD $500</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Package D</span>
+                        <span class="badge badge-confirmed">TTD $1,200</span>
+                    </div>
+                    <div class="card-body">
+                        <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; margin-bottom:8px;">Condition: Client Provides Speaker System</p>
+                        <ul style="padding-left:16px; display:flex; flex-direction:column; gap:6px; font-size:0.85rem; color:var(--text-main);">
+                            <li>Professional DJ Services</li>
+                            <li>Premium DJ Equipment</li>
+                            <li>1 Cordless Microphone</li>
+                        </ul>
+                        <div class="financial-row" style="margin-top:14px;">
+                            <span>Deposit Required:</span>
+                            <strong>TTD $0</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: PAYMENT TRACKING / FINANCES -->
+        <div id="finances-tab" class="tab-content">
+            <header>
+                <h1>Payment Tracking & Financial Summary</h1>
+            </header>
+            <div id="finances-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 5.6: EXPENSES & OVERHEAD -->
+        <div id="expenses-tab" class="tab-content">
+            <header>
+                <h1>Expenses & Overhead Tracking</h1>
+                <button class="btn" onclick="openModal('expense')">+ Add Expense</button>
+            </header>
+            <div style="display: flex; gap: 16px; margin-bottom: 24px; background: var(--card-bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border-color); flex-wrap: wrap;">
+                <input type="text" id="expense-search" class="form-control" placeholder="🔍 Search expense title or vendor..." oninput="renderAll()" style="flex: 2; min-width: 220px;">
+                <select id="expense-filter-cat" class="form-control" onchange="renderAll()" style="flex: 1; min-width: 150px;">
+                    <option value="">All Categories</option>
+                    <option value="Equipment & Maintenance">Equipment & Maintenance</option>
+                    <option value="Music Pool & Subscriptions">Music Pool & Subscriptions</option>
+                    <option value="Transport & Logistics">Transport & Logistics</option>
+                    <option value="Marketing & Promo">Marketing & Promo</option>
+                    <option value="Studio Utilities">Studio Utilities</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div id="expenses-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 5.7: CLIENT DATABASE & CRM BOOK -->
+        <div id="crm-tab" class="tab-content">
+            <header>
+                <h1>Client Database & Contact List (CRM)</h1>
+                <button class="btn" onclick="openModal('crm')">+ Add Client Contact</button>
+            </header>
+            <div style="display: flex; gap: 16px; margin-bottom: 24px; background: var(--card-bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border-color); flex-wrap: wrap;">
+                <input type="text" id="crm-search" class="form-control" placeholder="🔍 Search by client name, promoter, or venue..." oninput="renderAll()" style="flex: 2; min-width: 220px;">
+                <select id="crm-filter-type" class="form-control" onchange="renderAll()" style="flex: 1; min-width: 150px;">
+                    <option value="">All Types</option>
+                    <option value="Promoter">Promoter</option>
+                    <option value="Private Client">Private Client</option>
+                    <option value="Corporate / Planner">Corporate / Planner</option>
+                    <option value="Venue Contact">Venue Contact</option>
+                </select>
+            </div>
+            <div id="crm-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 5.8: SUPPORTING VENDORS & PARTNERS -->
+        <div id="vendors-tab" class="tab-content">
+            <header>
+                <h1>Supporting Vendors & Partners Directory</h1>
+                <button class="btn" onclick="openModal('vendor')">+ Add Vendor Contact</button>
+            </header>
+            <div style="display: flex; gap: 16px; margin-bottom: 24px; background: var(--card-bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border-color); flex-wrap: wrap;">
+                <input type="text" id="vendor-search" class="form-control" placeholder="🔍 Search by vendor name, service, or specialty..." oninput="renderAll()" style="flex: 2; min-width: 220px;">
+                <select id="vendor-filter-cat" class="form-control" onchange="renderAll()" style="flex: 1; min-width: 150px;">
+                    <option value="">All Services</option>
+                    <option value="Secondary DJ / MC">Secondary DJ / MC</option>
+                    <option value="Equipment Rental">Equipment Rental</option>
+                    <option value="Artist / Performer">Artist / Performer</option>
+                    <option value="Transport & Logistics">Transport & Logistics</option>
+                    <option value="Catering & Food">Catering & Food</option>
+                    <option value="Other Service">Other Service</option>
+                </select>
+            </div>
+            <div id="vendors-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 6: T-SHIRT SALES -->
+        <div id="shirts-tab" class="tab-content">
+            <header>
+                <h1>T-Shirt Sales & Merchandise</h1>
+                <button class="btn" onclick="openModal('shirt')">+ New T-Shirt Order</button>
+            </header>
+            <div style="display: flex; gap: 16px; margin-bottom: 24px; background: var(--card-bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border-color); flex-wrap: wrap;">
+                <input type="text" id="shirt-search" class="form-control" placeholder="🔍 Search by customer name or shirt design..." oninput="renderAll()" style="flex: 2; min-width: 220px;">
+                <select id="shirt-filter-status" class="form-control" onchange="renderAll()" style="flex: 1; min-width: 150px;">
+                    <option value="">All Payment Statuses</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Pending">Pending Payment</option>
+                </select>
+            </div>
+            <div id="shirts-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 7: STUDIO TASKS -->
+        <div id="tasks-tab" class="tab-content">
+            <header>
+                <h1>Studio Tasks & Production</h1>
+                <button class="btn" onclick="openModal('task')">+ Add Studio Task</button>
+            </header>
+            <div id="tasks-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 8: CRATE DIGGING -->
+        <div id="crate-tab" class="tab-content">
+            <!-- Rendered dynamically -->
+        </div>
+
+        <!-- TAB 10: TRICKS & IDEAS -->
+        <div id="tricks-tab" class="tab-content">
+            <header>
+                <h1>Tricks, Notes & Ideas</h1>
+                <button class="btn" onclick="openModal('trick')">+ Add Idea / Trick</button>
+            </header>
+            <div style="display: flex; gap: 16px; margin-bottom: 24px; background: var(--card-bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border-color); flex-wrap: wrap;">
+                <input type="text" id="trick-search" class="form-control" placeholder="🔍 Search ideas, tips, or notes..." oninput="renderAll()" style="flex: 2; min-width: 220px;">
+                <select id="trick-filter-category" class="form-control" onchange="renderAll()" style="flex: 1; min-width: 150px;">
+                    <option value="">All Categories</option>
+                    <option value="DJ Mixing Trick">DJ Mixing Trick</option>
+                    <option value="Transition Idea">Transition Idea</option>
+                    <option value="Set Organization">Set Organization</option>
+                    <option value="Business / Marketing">Business / Marketing</option>
+                    <option value="General Note">General Note</option>
+                </select>
+            </div>
+            <div id="tricks-grid" class="grid"></div>
+        </div>
+
+        <!-- TAB 9: GEAR & GADGETS -->
+        <div id="gear-tab" class="tab-content">
+            <header>
+                <h1>Gear & Gadgets Wishlist</h1>
+                <button class="btn" onclick="openModal('gear')">+ Add Item</button>
+            </header>
+            <div id="gear-grid" class="grid"></div>
+        </div>
+    </main>
+
+    <!-- EDIT / ADD MODAL -->
+    <div id="app-modal" class="modal-overlay">
+        <div class="modal">
+            <h3 id="modal-title">Add Entry</h3>
+            <form id="dynamic-form" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" id="form-type">
+                <input type="hidden" id="edit-item-id">
+                
+                <!-- STANDARD BOOKING/PIPELINE FIELDS -->
+                <div id="fields-booking">
+                    <div class="form-group">
+                        <label>Event / Client Name</label>
+                        <input type="text" id="f-title" class="form-control" placeholder="e.g., Summer Cooler Fete / John Doe">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Event Type</label>
+                            <select id="f-type" class="form-control">
+                                <option value="Club Night">Club Night</option>
+                                <option value="Private Party">Private Party</option>
+                                <option value="Carnival Fete">Carnival Fete</option>
+                                <option value="Wedding">Wedding</option>
+                                <option value="Corporate">Corporate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Date & Time</label>
+                            <input type="datetime-local" id="f-date" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Venue Location</label>
+                            <input type="text" id="f-location" class="form-control" placeholder="Venue & Address">
+                        </div>
+                        <div class="form-group">
+                            <label>Expected Pay (TTD)</label>
+                            <input type="number" id="f-pax" class="form-control" placeholder="e.g. 5000">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Total Price (TTD)</label>
+                            <input type="number" id="f-price" class="form-control" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label>Down Payment Status</label>
+                            <select id="f-deposit" class="form-control">
+                                <option value="Pending">Deposit Pending</option>
+                                <option value="Paid">Deposit Paid</option>
+                                <option value="Fully Paid">Fully Paid</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Service Package</label>
+                        <select id="f-package" class="form-control" onchange="updatePackagePrice()">
+                            <option value="Package A" data-price="3000">Package A - TT $3,000 (DJ & Host/MC, Full Speakers, 2 Mics)</option>
+                            <option value="Package B" data-price="2400">Package B - TT $2,400 (Professional DJ, Full Speakers, 2 Mics)</option>
+                            <option value="Package C" data-price="1500">Package C - TT $1,500 (Professional DJ, Small Speakers, 1 Mic)</option>
+                            <option value="Package D" data-price="1200">Package D - TT $1,200 (Professional DJ, Client provides speakers)</option>
+                            <option value="DJ Services Only">DJ Services Only (Custom)</option>
+                            <option value="Full DJ Package">Full DJ Package (Custom)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Day of Gig Notes & Timeline</label>
+                        <textarea id="f-notes" class="form-control" rows="3" placeholder="e.g., 5:00 PM Load-in, 6:00 PM Sound Check, 8:00 PM Set Starts..."></textarea>
+                    </div>
+                </div>
+
+                <!-- STUDIO TASK FIELDS -->
+                <div id="fields-task" style="display:none;">
+                    <div class="form-group">
+                        <label>Task Description</label>
+                        <input type="text" id="t-title" class="form-control" placeholder="e.g., Record August Soca Mixtape">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="t-category" class="form-control">
+                                <option value="Practice / Mixing">Practice / Mixing</option>
+                                <option value="Mixtape Production">Mixtape Production</option>
+                                <option value="Serato Library Management">Serato Library Management</option>
+                                <option value="Music Downloading">Music Downloading</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select id="t-priority" class="form-control">
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CRATE DIGGING FIELDS -->
+                <div id="fields-crate" style="display:none;">
+                    <div class="form-group">
+                        <label>Track Title & Artist (Add up to 15 songs at once - One per line)</label>
+                        <textarea id="c-title" class="form-control" rows="8" placeholder="e.g., Artist 1 - Track Name 1&#10;Artist 2 - Track Name 2&#10;...&#10;Artist 15 - Track Name 15"></textarea>
+                        <small style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; display: block;">Tip: Enter each song on a new line. You can add up to 15 songs at a time!</small>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Genre</label>
+                            <select id="c-genre" class="form-control">
+                                <option value="Soca">Soca</option>
+                                <option value="Dancehall">Dancehall</option>
+                                <option value="Reggae">Reggae</option>
+                                <option value="Afrobeat">Afrobeat</option>
+                                <option value="Hip Hop">Hip Hop</option>
+                                <option value="Remixes">Remixes</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Download Source / Link</label>
+                            <input type="text" id="c-source" class="form-control" placeholder="e.g., SoundCloud pool, Record label direct">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TRICKS & IDEAS FIELDS -->
+                <div id="fields-trick" style="display:none;">
+                    <div class="form-group">
+                        <label>Title / Summary</label>
+                        <input type="text" id="tr-title" class="form-control" placeholder="e.g., Quick double drop trick for Soca intro">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="tr-category" class="form-control">
+                            <option value="DJ Mixing Trick">DJ Mixing Trick</option>
+                            <option value="Transition Idea">Transition Idea</option>
+                            <option value="Set Organization">Set Organization</option>
+                            <option value="Business / Marketing">Business / Marketing</option>
+                            <option value="General Note">General Note</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Detailed Description & Notes</label>
+                        <textarea id="tr-desc" class="form-control" rows="4" placeholder="Describe the idea, steps, or things you learned in detail..."></textarea>
+                    </div>
+                </div>
+
+                <!-- GEAR FIELDS -->
+                <div id="fields-gear" style="display:none;">
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" id="g-title" class="form-control" placeholder="e.g., Pioneer DDJ-REV7">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Estimated Price (TTD)</label>
+                            <input type="number" id="g-price" class="form-control" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select id="g-priority" class="form-control">
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Purchase Link (Optional)</label>
+                        <input type="text" id="g-link" class="form-control" placeholder="https://amazon.com/...">
+                    </div>
+                </div>
+
+                <!-- EXPENSE FIELDS -->
+                <div id="fields-expense" style="display:none;">
+                    <div class="form-group">
+                        <label>Expense Description / Title</label>
+                        <input type="text" id="ex-title" class="form-control" placeholder="e.g., Serato DJ Pro monthly / XLR Cables">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="ex-category" class="form-control">
+                                <option value="Equipment & Maintenance">Equipment & Maintenance</option>
+                                <option value="Music Pool & Subscriptions">Music Pool & Subscriptions</option>
+                                <option value="Transport & Logistics">Transport & Logistics</option>
+                                <option value="Marketing & Promo">Marketing & Promo</option>
+                                <option value="Studio Utilities">Studio Utilities</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount (TTD)</label>
+                            <input type="number" id="ex-amount" class="form-control" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="ex-date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Vendor / Notes</label>
+                            <input type="text" id="ex-notes" class="form-control" placeholder="e.g., Mario's Music Shop">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLIENT CONTACT FIELDS -->
+                <div id="fields-crm" style="display:none;">
+                    <div class="form-group">
+                        <label>Client / Promoter Name</label>
+                        <input type="text" id="crm-name" class="form-control" placeholder="e.g., Marcus Bailey">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Contact Type</label>
+                            <select id="crm-type" class="form-control">
+                                <option value="Promoter">Promoter</option>
+                                <option value="Private Client">Private Client</option>
+                                <option value="Corporate / Planner">Corporate / Planner</option>
+                                <option value="Venue Contact">Venue Contact</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="crm-phone" class="form-control" placeholder="e.g., +1 868-555-1234">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="crm-email" class="form-control" placeholder="client@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Preferred Package</label>
+                            <select id="crm-package" class="form-control">
+                                <option value="Package A">Package A (TT $3,000)</option>
+                                <option value="Package B">Package B (TT $2,400)</option>
+                                <option value="Package C">Package C (TT $1,500)</option>
+                                <option value="Package D">Package D (TT $1,200)</option>
+                                <option value="Custom">Custom Package</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Client Notes & History</label>
+                        <textarea id="crm-notes" class="form-control" rows="3" placeholder="e.g., Organizes annual Chaguaramas cooler fetes..."></textarea>
+                    </div>
+                </div>
+
+                <!-- VENDOR CONTACT FIELDS -->
+                <div id="fields-vendor" style="display:none;">
+                    <div class="form-group">
+                        <label>Vendor / Partner Name</label>
+                        <input type="text" id="v-name" class="form-control" placeholder="e.g., Island Sound & Lights / DJ Kevin">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Service Category</label>
+                            <select id="v-category" class="form-control">
+                                <option value="Secondary DJ / MC">Secondary DJ / MC</option>
+                                <option value="Equipment Rental">Equipment Rental</option>
+                                <option value="Artist / Performer">Artist / Performer</option>
+                                <option value="Transport & Logistics">Transport & Logistics</option>
+                                <option value="Catering & Food">Catering & Food</option>
+                                <option value="Other Service">Other Service</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="v-phone" class="form-control" placeholder="e.g., +1 868-555-9876">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="v-email" class="form-control" placeholder="vendor@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Rates / Pricing Notes</label>
+                            <input type="text" id="v-rates" class="form-control" placeholder="e.g., $800 TTD per night or bulk discount">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Vendor Details & Notes</label>
+                        <textarea id="v-notes" class="form-control" rows="3" placeholder="e.g., Reliable speaker rentals in San Fernando, requires 48 hours notice..."></textarea>
+                    </div>
+                </div>
+
+                <!-- T-SHIRT ORDER FIELDS -->
+                <div id="fields-shirt" style="display:none;">
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text" id="s-customer" class="form-control" placeholder="e.g., Marcus Bailey">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Shirt Design / Edition</label>
+                            <input type="text" id="s-design" class="form-control" placeholder="e.g., Signature Tour Tee">
+                        </div>
+                        <div class="form-group">
+                            <label>Size</label>
+                            <select id="s-size" class="form-control">
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="2XL">2XL</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" id="s-qty" class="form-control" value="1" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Total Price (TTD)</label>
+                            <input type="number" id="s-price" class="form-control" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Payment Status</label>
+                            <select id="s-payment" class="form-control">
+                                <option value="Pending">Pending</option>
+                                <option value="Paid">Paid</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fulfillment Status</label>
+                            <select id="s-fulfillment" class="form-control">
+                                <option value="Queued">Queued</option>
+                                <option value="Ready">Ready</option>
+                                <option value="Delivered">Delivered</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn">Save Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CONTRACT GENERATOR MODAL -->
+    <div id="contract-modal" class="modal-overlay">
+        <div class="modal" style="max-width: 750px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed var(--border-color); padding-bottom: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <h2 style="font-family: 'Syncopate', sans-serif; font-size: 1.2rem; background: var(--gradient-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DJ LQ ENTERTAINMENT</h2>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Event Services & Entertainment Agreement</p>
+                </div>
+                <div style="text-align: right; font-size: 0.75rem; color: var(--text-muted);">
+                    <p><strong>Phone:</strong> (868) 336-2309</p>
+                    <p><strong>Email:</strong> djlqmusic868@gmail.com</p>
+                </div>
+            </div>
+
+            <div id="contract-body" style="margin-bottom: 24px; font-size: 0.85rem; line-height: 1.5; color: var(--text-main);">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeContractModal()">Close</button>
+                <button type="button" class="btn" onclick="window.print()">🖨️ Print / Save Contract PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- INVOICE GENERATOR MODAL -->
+    <div id="invoice-modal" class="modal-overlay">
+        <div class="modal" style="max-width: 700px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed var(--border-color); padding-bottom: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <h2 style="font-family: 'Syncopate', sans-serif; font-size: 1.2rem; background: var(--gradient-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DJ LQ MUSIC</h2>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Professional DJ & Event Production Services</p>
+                </div>
+                <div style="text-align: right;">
+                    <h3 style="font-size: 1.1rem; color: #0f172a;">INVOICE</h3>
+                    <p id="inv-id" style="font-size: 0.8rem; color: var(--text-muted);">INV-#2026-001</p>
+                </div>
+            </div>
+
+            <div id="invoice-body" style="margin-bottom: 24px; font-size: 0.9rem;">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeInvoiceModal()">Close</button>
+                <button type="button" class="btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SYNC INSTRUCTIONS MODAL -->
+    <div id="sync-help-modal" class="modal-overlay">
+        <div class="modal" style="max-width: 650px;">
+            <h3 style="font-size: 1.2rem; margin-bottom: 14px;">How to Connect Google Sheets Sync</h3>
+            <div style="font-size: 0.85rem; line-height: 1.6; color: var(--text-muted); display: flex; flex-direction: column; gap: 10px;">
+                <p>To have your phone and computer sync automatically via Google Drive, you can link this app to a Google Sheet using a free Google Apps Script web app:</p>
+                <ol style="padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                    <li>Go to <a href="https://sheets.new" target="_blank" style="color: var(--info); font-weight:600;">sheets.new</a> in your Google account to create a blank Google Sheet.</li>
+                    <li>Click on <strong>Extensions > Apps Script</strong> in the top menu.</li>
+                    <li>Delete any code in the editor and paste the Apps Script code provided below.</li>
+                    <li>Click <strong>Deploy > New deployment</strong>, select type <strong>Web app</strong>, set Execute as <strong>Me</strong> and Who has access to <strong>Anyone</strong>.</li>
+                    <li>Copy the generated Web App URL and paste it into the "Apps Script Web App URL" box in your app sidebar, then click <strong>Sync Now</strong>!</li>
+                </ol>
+                <div style="background: #f8fafc; padding: 10px; border-radius: 8px; font-family: monospace; font-size: 0.75rem; border: 1px solid var(--border-color); overflow-x: auto;">
+                    // Apps Script code snippet:<br>
+                    function doPost(e) {<br>
+                    &nbsp;&nbsp;var data = JSON.parse(e.postData.contents);<br>
+                    &nbsp;&nbsp;var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();<br>
+                    &nbsp;&nbsp;sheet.clear();<br>
+                    &nbsp;&nbsp;sheet.appendRow(["JSON_DATA", JSON.stringify(data)]);<br>
+                    &nbsp;&nbsp;return ContentService.createTextOutput(JSON.stringify({"status":"success"})).setMimeType(ContentService.MimeType.JSON);<br>
+                    }<br>
+                    function doGet(e) {<br>
+                    &nbsp;&nbsp;var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();<br>
+                    &nbsp;&nbsp;var val = sheet.getRange(1, 2).getValue();<br>
+                    &nbsp;&nbsp;return ContentService.createTextOutput(val || "{}").setMimeType(ContentService.MimeType.JSON);<br>
+                    }
+                </div>
+            </div>
+            <div class="modal-actions" style="margin-top: 20px;">
+                <button type="button" class="btn" onclick="document.getElementById('sync-help-modal').classList.remove('open')">Got It</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let appData = JSON.parse(localStorage.getItem('djlq_app_data')) || {
+            bookings: [
+                { id: 1, title: "Soca Monarch After-Party", type: "Carnival Fete", date: "2026-10-15T22:00", location: "O2 Park, Chaguaramas", pax: 5000, price: 5000, deposit: "Pending", package: "Full DJ Package", notes: "• Load-in & Gear Check: 2 hours prior\n• Sound Check: 1 hour prior\n• Set Starts: 10:00 PM" },
+                { id: 2, title: "Private Birthday Celebration", type: "Private Party", date: "2026-09-28T19:00", location: "La Florissante, D'Abadie", pax: 2200, price: 2200, deposit: "Pending", package: "DJ Services Only", notes: "- Arrive by 6:00 PM\n- Connect to house mixer\n- Carry Fan\n- Drop mixer for Akeem" }
+            ],
+            pipeline: [
+                { id: 3, title: "Downtown Rooftop Cooler", type: "Club Night", date: "2026-11-05T20:00", location: "San Fernando", pax: 3500, price: 3500, deposit: "Pending", package: "DJ Services Only", notes: "• Coordinate with promoter on rooftop access" }
+            ],
+            history: [],
+            expenses: [
+                { id: 801, title: "Serato DJ Pro + FX Pack", category: "Music Pool & Subscriptions", amount: 450, date: "2026-06-01", notes: "Annual subscription renewal" },
+                { id: 802, title: "Transport to Chaguaramas Gig", category: "Transport & Logistics", amount: 200, date: "2026-06-03", notes: "Gas & Parking" }
+            ],
+            crm: [
+                { id: 601, name: "Marcus Bailey", type: "Promoter", phone: "+1 868-333-4455", email: "marcus@promotions868.com", package: "Package A", notes: "Organizes major Chaguaramas cooler fetes. Always requires advance deposit confirmation." }
+            ],
+            vendors: [
+                { id: 701, name: "Island Sound & Lights", category: "Equipment Rental", phone: "+1 868-662-1234", email: "rentals@islandsound.tt", rates: "Custom event packages", notes: "Reliable backup speakers and wireless mics." }
+            ],
+            shirts: [
+                { id: 401, customer: "Kevan Thomas", design: "Signature Tour Tee", size: "L", qty: 2, price: 300, payment: "Paid", fulfillment: "Ready" }
+            ],
+            tasks: [
+                { id: 501, title: "Export August Soca Mixtape", category: "Mixtape Production", priority: "High" }
+            ],
+            crate: [
+                { id: 701, title: "Machel Montano - Hard Fete", genre: "Soca", source: "SoundCloud", dateAdded: "2026-06-01" },
+                { id: 702, title: "Kes - Endless Vibration", genre: "Soca", source: "Direct Pool", dateAdded: "2026-06-02" }
+            ],
+            tricks: [
+                { id: 901, title: "Double Drop Intro Trick", category: "DJ Mixing Trick", desc: "Drop a high-energy Soca acapella over an Afrobeat instrumental for smooth festival transitions." }
+            ],
+            gear: [
+                { id: 801, title: "Pioneer DDJ-REV7", price: 9500, priority: "High", link: "https://pioneerdj.com" }
+            ]
+        };
+
+        let crateSortMode = 'date-desc';
+        let selectedCrateIds = [];
+
+        window.onload = function() {
+            const savedUrl = localStorage.getItem('djlq_sync_url') || '';
+            document.getElementById('sync-script-url').value = savedUrl;
+            if (savedUrl) {
+                syncWithGoogleCloud(true);
+            }
+            checkAndArchivePastBookings();
+            renderAll();
+        };
+
+        function saveAppData() {
+            localStorage.setItem('djlq_app_data', JSON.stringify(appData));
+            const syncUrl = document.getElementById('sync-script-url').value.trim();
+            if (syncUrl) {
+                localStorage.setItem('djlq_sync_url', syncUrl);
+            }
+        }
+
+        async function syncWithGoogleCloud(isInitial = false) {
+            const url = document.getElementById('sync-script-url').value.trim();
+            const statusEl = document.getElementById('sync-status');
+            if (!url) {
+                if (!isInitial) alert("Please enter your Google Apps Script Web App URL first.");
+                return;
+            }
+            statusEl.innerText = "Syncing...";
+            statusEl.style.color = "var(--accent)";
+
+            try {
+                if (isInitial) {
+                    const response = await fetch(url);
+                    const result = await response.json();
+                    if (result && result.bookings) {
+                        appData = result;
+                        saveAppData();
+                        renderAll();
+                    }
+                } else {
+                    await fetch(url, {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(appData)
+                    });
+                }
+                statusEl.innerText = "Synced ✓";
+                statusEl.style.color = "var(--success)";
+            } catch (err) {
+                statusEl.innerText = "Error ✗";
+                statusEl.style.color = "var(--danger)";
+                if (!isInitial) console.error("Sync error:", err);
+            }
+        }
+
+        function openSyncInstructions() {
+            document.getElementById('sync-help-modal').classList.add('open');
+        }
+
+        function toggleMobileMenu(forceClose = false) {
+            const sidebar = document.getElementById('app-sidebar');
+            if (forceClose) {
+                sidebar.classList.remove('open');
+            } else {
+                sidebar.classList.toggle('open');
+            }
+        }
+
+        function switchTab(tabName, btnEl) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+            const targetTab = document.getElementById(tabName + '-tab');
+            if (targetTab) targetTab.classList.add('active');
+            if (btnEl) btnEl.classList.add('active');
+            renderAll();
+        }
+
+        function checkAndArchivePastBookings() {
+            const now = new Date();
+            if (!appData.history) appData.history = [];
+            
+            appData.bookings = appData.bookings.filter(b => {
+                if (!b.date) return true;
+                const gigDate = new Date(b.date);
+                if (gigDate < now) {
+                    appData.history.push({
+                        ...b,
+                        realizedRevenue: b.price || 0,
+                        archiveNotes: b.notes || "Archived automatically upon completion."
+                    });
+                    return false;
+                }
+                return true;
+            });
+            saveAppData();
+        }
+
+        function renderAll() {
+            renderBookings();
+            renderHistory();
+            renderSchedule();
+            renderPipeline();
+            renderFinances();
+            renderExpenses();
+            renderCrm();
+            renderVendors();
+            renderShirts();
+            renderTasks();
+            renderCrate();
+            renderTricks();
+            renderGear();
+            saveAppData();
+        }
+
+        function renderBookings() {
+            const grid = document.getElementById('bookings-grid');
+            const search = document.getElementById('booking-search').value.toLowerCase();
+            const filterType = document.getElementById('booking-filter-type').value;
+            const filterDeposit = document.getElementById('booking-filter-deposit').value;
+
+            let filtered = (appData.bookings || []).filter(item => {
+                const matchesSearch = (item.title || '').toLowerCase().includes(search) || (item.location || '').toLowerCase().includes(search);
+                const matchesType = filterType === '' || item.type === filterType;
+                const matchesDeposit = filterDeposit === '' || item.deposit === filterDeposit;
+                return matchesSearch && matchesType && matchesDeposit;
+            });
+
+            grid.innerHTML = filtered.length ? '' : '<p style="color:var(--text-muted)">No active bookings found.</p>';
+            filtered.forEach(item => {
+                let badgeClass = item.deposit === 'Paid' ? 'badge-confirmed' : (item.deposit === 'Fully Paid' ? 'badge-confirmed' : 'badge-pending');
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">🎛️ ${item.title}</span>
+                            <span class="badge ${badgeClass}">Deposit: ${item.deposit}</span>
+                        </div>
+                        <div class="card-body">
+                            <p>🏷️ <strong>Type:</strong> ${item.type}</p>
+                            <p>📅 <strong>Date:</strong> ${item.date ? item.date.replace('T', ' ') : 'N/A'}</p>
+                            <p>📍 <strong>Location:</strong> ${item.location || 'N/A'}</p>
+                            <p>📦 <strong>Package:</strong> ${item.package || 'Custom'}</p>
+                            <div class="financial-row">
+                                <span>Agreed Price:</span>
+                                <strong>TTD $${item.price || 0}</strong>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn" style="color:var(--neon-pink);" onclick="openInvoiceModal(${item.id})">📄 Invoice</button>
+                            <button class="action-btn" style="color:var(--success);" onclick="openContractModal(${item.id})">📝 Contract</button>
+                            <button class="action-btn btn-edit" onclick="openModal('booking', ${item.id})">Edit</button>
+                            <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'bookings')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderHistory() {
+            const grid = document.getElementById('history-grid');
+            const search = document.getElementById('history-search').value.toLowerCase();
+
+            let filtered = (appData.history || []).filter(item => {
+                return (item.title || '').toLowerCase().includes(search) || (item.location || '').toLowerCase().includes(search);
+            });
+
+            grid.innerHTML = filtered.length ? '' : '<p style="color:var(--text-muted)">No past gigs archived yet.</p>';
+            filtered.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">📜 ${item.title}</span>
+                            <span class="badge badge-confirmed">Completed</span>
+                        </div>
+                        <div class="card-body">
+                            <p>📅 <strong>Date:</strong> ${item.date ? item.date.replace('T', ' ') : 'N/A'}</p>
+                            <p>📍 <strong>Location:</strong> ${item.location || 'N/A'}</p>
+                            <div class="financial-row">
+                                <span>Realized Revenue (TTD):</span>
+                                <input type="number" value="${item.realizedRevenue !== undefined ? item.realizedRevenue : (item.price || 0)}" onchange="updateHistoryField(${item.id}, 'realizedRevenue', this.value)" class="form-control" style="width: 110px; padding: 4px; font-weight: 700;">
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Post-Gig Notes:</label>
+                                <textarea class="form-control" rows="2" onchange="updateHistoryField(${item.id}, 'archiveNotes', this.value)" style="font-size: 0.8rem; margin-top: 4px;">${item.archiveNotes || ''}</textarea>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'history')">Delete from Archive</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateHistoryField(id, field, val) {
+            let item = appData.history.find(i => i.id === id);
+            if (item) {
+                item[field] = field === 'realizedRevenue' ? parseFloat(val) || 0 : val;
+                saveAppData();
+            }
+        }
+
+        function renderSchedule() {
+            const grid = document.getElementById('schedule-grid');
+            let bookings = appData.bookings || [];
+            grid.innerHTML = bookings.length ? '' : '<p style="color:var(--text-muted)">No active bookings scheduled.</p>';
+            bookings.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">⏱️ ${item.title}</span>
+                            <span class="badge badge-confirmed">${item.date ? item.date.split('T')[0] : 'TBD'}</span>
+                        </div>
+                        <div class="card-body">
+                            <p>📍 <strong>Venue:</strong> ${item.location || 'N/A'}</p>
+                            <p>🕒 <strong>Time:</strong> ${item.date ? item.date.split('T')[1] : 'TBD'}</p>
+                            <div style="margin-top: 10px; background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
+                                <strong style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Day of Gig Timeline & Notes:</strong>
+                                <p style="white-space: pre-line; margin-top: 6px; font-size: 0.85rem; color: var(--text-main);">${item.notes || 'No timeline notes added yet. Click edit in Active Bookings to add sound check times and run of show.'}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderPipeline() {
+            const grid = document.getElementById('pipeline-grid');
+            let pipeline = appData.pipeline || [];
+            grid.innerHTML = pipeline.length ? '' : '<p style="color:var(--text-muted)">No projected gigs in the pipeline.</p>';
+            pipeline.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">🚀 ${item.title}</span>
+                            <span class="badge badge-lead">Projected</span>
+                        </div>
+                        <div class="card-body">
+                            <p>🏷️ <strong>Type:</strong> ${item.type}</p>
+                            <p>📅 <strong>Target Date:</strong> ${item.date ? item.date.replace('T', ' ') : 'N/A'}</p>
+                            <p>📍 <strong>Location:</strong> ${item.location || 'N/A'}</p>
+                            <div class="financial-row">
+                                <span>Estimated Potential:</span>
+                                <strong>TTD $${item.price || 0}</strong>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-edit" onclick="openModal('pipeline', ${item.id})">Edit</button>
+                            <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'pipeline')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderFinances() {
+            const grid = document.getElementById('finances-grid');
+            let totalBookings = (appData.bookings || []).reduce((sum, i) => sum + (parseFloat(i.price) || 0), 0);
+            let totalHistory = (appData.history || []).reduce((sum, i) => sum + (parseFloat(i.realizedRevenue) || 0), 0);
+            let totalPipeline = (appData.pipeline || []).reduce((sum, i) => sum + (parseFloat(i.price) || 0), 0);
+            let totalExpenses = (appData.expenses || []).reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0);
+            let netTotal = (totalBookings + totalHistory) - totalExpenses;
+
+            grid.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">💰 Active Bookings Revenue</span>
+                    </div>
+                    <div class="card-body">
+                        <h2 style="font-size: 1.8rem; color: var(--success); margin: 10px 0;">TTD $${totalBookings.toLocaleString()}</h2>
+                        <p>Total contracted revenue from active upcoming gigs.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">📜 Realized History Revenue</span>
+                    </div>
+                    <div class="card-body">
+                        <h2 style="font-size: 1.8rem; color: var(--info); margin: 10px 0;">TTD $${totalHistory.toLocaleString()}</h2>
+                        <p>Earnings collected from completed past gigs.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">💸 Total Business Expenses</span>
+                    </div>
+                    <div class="card-body">
+                        <h2 style="font-size: 1.8rem; color: var(--danger); margin: 10px 0;">TTD $${totalExpenses.toLocaleString()}</h2>
+                        <p>Overhead, gear maintenance, and subscriptions.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">📈 Net Career Profit</span>
+                    </div>
+                    <div class="card-body">
+                        <h2 style="font-size: 1.8rem; color: var(--accent); margin: 10px 0;">TTD $${netTotal.toLocaleString()}</h2>
+                        <p>Combined Active & History Revenue minus Expenses.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">🚀 Projected Pipeline Value</span>
+                    </div>
+                    <div class="card-body">
+                        <h2 style="font-size: 1.8rem; color: var(--text-main); margin: 10px 0;">TTD $${totalPipeline.toLocaleString()}</h2>
+                        <p>Potential future earnings from targeted gigs.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderExpenses() {
+            const grid = document.getElementById('expenses-grid');
+            const search = document.getElementById('expense-search').value.toLowerCase();
+            const filterCat = document.getElementById('expense-filter-cat').value;
+
+            let filtered = (appData.expenses || []).filter(item => {
+                const matchesSearch = (item.title || '').toLowerCase().includes(search) || (item.notes || '').toLowerCase().includes(search);
+                const matchesCat = filterCat === '' || item.category === filterCat;
+                return matchesSearch && matchesCat;
+            });
+
+            grid.innerHTML = filtered.length ? '' : '<p style="color:var(--text-muted)">No expenses recorded.</p>';
+            filtered.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">💸 ${item.title}</span>
+                            <span class="badge badge-pending">${item.category}</span>
+                        </div>
+                        <div class="card-body">
+                            <p>📅 <strong>Date:</strong> ${item.date || 'N/A'}</p>
+                            <p>📝 <strong>Vendor / Notes:</strong> ${item.notes || 'N/A'}</p>
+                            <div class="financial-row">
+                                <span>Amount:</span>
+                                <strong style="color: var(--danger);">TTD $${item.amount || 0}</strong>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-edit" onclick="openModal('expense', ${item.id})">Edit</button>
+                            <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'expenses')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderCrm() {
+            const grid = document.getElementById('crm-grid');
+            const search = document.getElementById('crm-search').value.toLowerCase();
+            const filterType = document.getElementById('crm-filter-type').value;
+
+            let filtered = (appData.crm || []).filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(search) || (item.email || '').toLowerCase().includes(search) || (item.phone || '').toLowerCase().includes(search);
+                const matchesType = filterType === '' || item.type === filterType;
+                return matchesSearch && matchesType;
+            });
+
+            grid.innerHTML = filtered.length ? '' : '<p style="color:var(--text-muted)">No client contacts match your search criteria.</p>';
+            filtered.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">📇 ${item.name}</span>
+                            <span class="badge badge-confirmed">${item.type}</span>
+                        </div>
+                        <div class="card-body">
+                            <p>📞 <strong>Phone:</strong> <a href="tel:${item.phone}" style="color:var(--info); font-weight:600;">${item.phone || 'N/A'}</a></p>
+                            <p>📧 <strong>Email:</strong> <a href="mailto:${item.email}" style="color:var(--info); font-weight:600;">${item.email || 'N/A'}</a></p>
+                            <p>📦 <strong>Preferred Package:</strong> ${item.package || 'Standard'}</p>
+                            ${item.notes ? `<p>📝 <strong>Notes:</strong> ${item.notes}</p>` : ''}
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-edit" onclick="openModal('crm', ${item.id})">Edit Contact</button>
+                            <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'crm')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderVendors() {
+            const grid = document.getElementById('vendors-grid');
+            const search = document.getElementById('vendor-search').value.toLowerCase();
+            const filterCat = document.getElementById('vendor-filter-cat').value;
+
+            let filtered = (appData.vendors || []).filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(search) || (item.email || '').toLowerCase().includes(search) || (item.notes || '').toLowerCase().includes(search);
+                const matchesCat = filterCat === '' || item.category === filterCat;
+                return matchesSearch && matchesCat;
+            });
+
+            grid.innerHTML = filtered.length ? '' : '<p style="color:var(--text-muted)">No vendor contacts match your search criteria.</p>';
+            filtered.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">🤝 ${item.name}</span>
+                            <span class="badge badge-confirmed">${item.category}</span>
+                        </div>
+                        <div class="card-body">
+                            <p>📞 <strong>Phone:</strong> <a href="tel:${item.phone}" style="color:var(--info); font-weight:600;">${item.phone || 'N/A'}</a></p>
+                            <p>📧 <strong>Email:</strong> <a href="mailto:${item.email}" style="color:var(--info); font-weight:600;">${item.email || 'N/A'}</a></p>
+                            <p>💵 <strong>Rates / Pricing:</strong> ${item.rates || 'Standard'}</p>
+                            ${item.notes ? `<p>📝 <strong>Notes:</strong> ${item.notes}</p>` : ''}
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-edit" onclick="openModal('vendor', ${item.id})">Edit Vendor</button>
+                            <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'vendors')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderShirts() {
+            const grid = document.getElementById('shirts-grid');
+            const search = document.getElementById('shirt-search').value.toLowerCase();
+            const filterStatus = document.getElementById('shirt-filter-status').value;
+
+            let filtered = (appData.shirts || []).filter(item => {
+                const matchesSearch = item.customer.toLowerCase().includes(search) || item.design.toLowerCase().includes(search);
+                const matchesStatus = filterStatus === '' || item.payment === filterStatus;
+                return matchesSearch && matchesStatus;
+            });
+
+            grid.innerHTML = filtered.length ? '' : '<p style="color:var(--text-muted)">No t-shirt orders recorded.</p>';
+            filtered.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">👕 ${item.customer}</span>
+                            <span class="badge ${item.payment === 'Paid' ? 'badge-confirmed' : 'badge-pending'}">${item.payment}</span>
+                        </div>
+                        <div class="card-body">
+                            <p>🎨 <strong>Design:</strong> ${item.design}</p>
+                            <p>📏 <strong>Size & Qty:</strong> Size ${item.size} (Qty: ${item.qty})</p>
+                            <p>🚚 <strong>Fulfillment:</strong> ${item.fulfillment || 'Queued'}</p>
+                            <div class="financial-row">
+                                <span>Total:</span>
+                                <strong>TTD $${item.price || 0}</strong>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-edit" onclick="openModal('shirt', ${item.id})">Edit</button>
+                            <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'shirts')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderTasks() {
+            const grid = document.getElementById('tasks-grid');
+            let tasks = appData.tasks || [];
+            grid.innerHTML = tasks.length ? '' : '<p style="color:var(--text-muted)">No studio tasks pending.</p>';
+            tasks.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">🎧 ${item.title}</span>
+                            <span class="badge ${item.priority === 'High' ? 'badge-pending' : 'badge-confirmed'}">${item.priority} Priority</span>
+                        </div>
+                        <div class="card-body">
+                            <p>🏷️ <strong>Category:</strong> ${item.category}</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'tasks')">Complete / Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderCrate() {
+            const container = document.getElementById('crate-tab');
+            let crate = appData.crate || [];
+
+            // Sorting logic
+            crate.sort((a, b) => {
+                if (crateSortMode === 'alpha-asc') return a.title.localeCompare(b.title);
+                if (crateSortMode === 'alpha-desc') return b.title.localeCompare(a.title);
+                if (crateSortMode === 'date-asc') return new Date(a.dateAdded || 0) - new Date(b.dateAdded || 0);
+                return new Date(b.dateAdded || 0) - new Date(a.dateAdded || 0); // default date-desc
+            });
+
+            let listHtml = '';
+            crate.forEach(item => {
+                let isChecked = selectedCrateIds.includes(item.id) ? 'checked' : '';
+                listHtml += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 14px 18px; border-radius: 12px; border: 1px solid var(--border-color); gap: 12px;">
+                        <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                            <input type="checkbox" ${isChecked} onchange="toggleCrateSelect(${item.id})" style="width: 18px; height: 18px; cursor: pointer;">
+                            <div>
+                                <h4 style="font-size: 0.95rem; font-weight: 700; color: #0f172a;">💿 ${item.title}</h4>
+                                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Genre: <strong>${item.genre}</strong> | Source: ${item.source || 'N/A'} | Added: ${item.dateAdded || 'N/A'}</p>
+                            </div>
+                        </div>
+                        <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'crate')">Remove</button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = `
+                <header>
+                    <h1>Crate Digging & Music Vault</h1>
+                    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                        ${selectedCrateIds.length > 0 ? `<button class="btn" style="background: var(--danger); padding: 10px 16px; font-size: 0.75rem;" onclick="deleteSelectedCrate()">🗑️ Delete Selected (${selectedCrateIds.length})</button>` : ''}
+                        <button class="btn" onclick="openModal('crate')">+ Add Track(s)</button>
+                    </div>
+                </header>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--card-bg); padding: 14px 18px; border-radius: 14px; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 12px;">
+                    <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-main);">
+                        Total Tracks in Vault: <strong>${crate.length}</strong>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Sort By:</label>
+                        <select id="crate-sort-select" class="form-control" onchange="setCrateSort(this.value)" style="width: 180px; padding: 8px; font-size: 0.8rem;">
+                            <option value="date-desc" ${crateSortMode === 'date-desc' ? 'selected' : ''}>Date Added (Newest)</option>
+                            <option value="date-asc" ${crateSortMode === 'date-asc' ? 'selected' : ''}>Date Added (Oldest)</option>
+                            <option value="alpha-asc" ${crateSortMode === 'alpha-asc' ? 'selected' : ''}>Alphabetical (A - Z)</option>
+                            <option value="alpha-desc" ${crateSortMode === 'alpha-desc' ? 'selected' : ''}>Alphabetical (Z - A)</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    ${crate.length ? listHtml : '<p style="color:var(--text-muted)">Your crate is empty. Add up to 15 tracks at once!</p>'}
+                </div>
+            `;
+        }
+
+        function setCrateSort(mode) {
+            crateSortMode = mode;
+            renderCrate();
+        }
+
+        function toggleCrateSelect(id) {
+            if (selectedCrateIds.includes(id)) {
+                selectedCrateIds = selectedCrateIds.filter(i => i !== id);
+            } else {
+                selectedCrateIds.push(id);
+            }
+            renderCrate();
+        }
+
+        function deleteSelectedCrate() {
+            if (confirm(`Are you sure you want to remove ${selectedCrateIds.length} selected tracks from your crate?`)) {
+                appData.crate = appData.crate.filter(i => !selectedCrateIds.includes(i.id));
+                selectedCrateIds = [];
+                renderAll();
+            }
+        }
+
+        function renderTricks() {
+            const grid = document.getElementById('tricks-grid');
+            const search = document.getElementById('trick-search').value.toLowerCase();
+            const filterCat = document.getElementById('trick-filter-category').value;
+
+            let filtered = (appData.tricks || []).filter(item => {
+                const matchesSearch = item.title.toLowerCase().includes(search) || (item.desc || '').toLowerCase().includes(search);
+                const matchesCat = filterCat === '' || item.category === filterCat;
+                return matchesSearch && matchesCat;
+            });
+
+            grid.innerHTML = filtered.length ? '' : '<p style="color:var(--text-muted)">No tricks or ideas recorded yet.</p>';
+            filtered.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">💡 ${item.title}</span>
+                            <span class="badge badge-confirmed">${item.category}</span>
+                        </div>
+                        <div class="card-body">
+                            <p style="white-space: pre-line; color: var(--text-main); font-size: 0.88rem; margin-top: 4px;">${item.desc || ''}</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-edit" onclick="openModal('trick', ${item.id})">Edit Idea</button>
+                            <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'tricks')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderGear() {
+            const grid = document.getElementById('gear-grid');
+            let gear = appData.gear || [];
+            grid.innerHTML = gear.length ? '' : '<p style="color:var(--text-muted)">No gear wishlist items added.</p>';
+            gear.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">⚡ ${item.title}</span>
+                            <span class="badge badge-pending">${item.priority} Priority</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="financial-row">
+                                <span>Estimated Price:</span>
+                                <strong>TTD $${item.price || 0}</strong>
+                            </div>
+                            ${item.link ? `<p style="margin-top: 8px;"><a href="${item.link}" target="_blank" style="color:var(--info); font-weight:600; text-decoration:underline;">🔗 View Purchase Link</a></p>` : ''}
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn btn-delete" onclick="deleteItem(${item.id}, 'gear')">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openModal(type, editId = null) {
+            document.getElementById('form-type').value = type;
+            const modalTitle = document.getElementById('modal-title');
+            
+            document.getElementById('fields-booking').style.display = (type === 'booking' || type === 'pipeline') ? 'block' : 'none';
+            document.getElementById('fields-task').style.display = (type === 'task') ? 'block' : 'none';
+            document.getElementById('fields-crate').style.display = (type === 'crate') ? 'block' : 'none';
+            document.getElementById('fields-trick').style.display = (type === 'trick') ? 'block' : 'none';
+            document.getElementById('fields-gear').style.display = (type === 'gear') ? 'block' : 'none';
+            document.getElementById('fields-expense').style.display = (type === 'expense') ? 'block' : 'none';
+            document.getElementById('fields-crm').style.display = (type === 'crm') ? 'block' : 'none';
+            document.getElementById('fields-vendor').style.display = (type === 'vendor') ? 'block' : 'none';
+            document.getElementById('fields-shirt').style.display = (type === 'shirt') ? 'block' : 'none';
+
+            if (editId) {
+                document.getElementById('edit-item-id').value = editId;
+                modalTitle.innerText = "Edit Entry";
+                let collection = type === 'booking' ? appData.bookings : (type === 'pipeline' ? appData.pipeline : (type === 'expense' ? appData.expenses : (type === 'crm' ? appData.crm : (type === 'vendor' ? appData.vendors : (type === 'shirt' ? appData.shirts : (type === 'trick' ? appData.tricks : []))))));
+                let item = collection.find(i => i.id === parseInt(editId));
+                if (item) {
+                    if (type === 'booking' || type === 'pipeline') {
+                        document.getElementById('f-title').value = item.title;
+                        document.getElementById('f-type').value = item.type;
+                        document.getElementById('f-date').value = item.date;
+                        document.getElementById('f-location').value = item.location;
+                        document.getElementById('f-pax').value = item.pax;
+                        document.getElementById('f-price').value = item.price;
+                        document.getElementById('f-deposit').value = item.deposit;
+                        document.getElementById('f-package').value = item.package || 'Package A';
+                        document.getElementById('f-notes').value = item.notes || '';
+                    } else if (type === 'expense') {
+                        document.getElementById('ex-title').value = item.title;
+                        document.getElementById('ex-category').value = item.category;
+                        document.getElementById('ex-amount').value = item.amount;
+                        document.getElementById('ex-date').value = item.date;
+                        document.getElementById('ex-notes').value = item.notes || '';
+                    } else if (type === 'crm') {
+                        document.getElementById('crm-name').value = item.name;
+                        document.getElementById('crm-type').value = item.type;
+                        document.getElementById('crm-phone').value = item.phone;
+                        document.getElementById('crm-email').value = item.email;
+                        document.getElementById('crm-package').value = item.package;
+                        document.getElementById('crm-notes').value = item.notes || '';
+                    } else if (type === 'vendor') {
+                        document.getElementById('v-name').value = item.name;
+                        document.getElementById('v-category').value = item.category;
+                        document.getElementById('v-phone').value = item.phone;
+                        document.getElementById('v-email').value = item.email;
+                        document.getElementById('v-rates').value = item.rates;
+                        document.getElementById('v-notes').value = item.notes || '';
+                    } else if (type === 'shirt') {
+                        document.getElementById('s-customer').value = item.customer;
+                        document.getElementById('s-design').value = item.design;
+                        document.getElementById('s-size').value = item.size;
+                        document.getElementById('s-qty').value = item.qty;
+                        document.getElementById('s-price').value = item.price;
+                        document.getElementById('s-payment').value = item.payment;
+                        document.getElementById('s-fulfillment').value = item.fulfillment;
+                    } else if (type === 'trick') {
+                        document.getElementById('tr-title').value = item.title;
+                        document.getElementById('tr-category').value = item.category;
+                        document.getElementById('tr-desc').value = item.desc;
+                    }
+                }
+            } else {
+                document.getElementById('edit-item-id').value = '';
+                modalTitle.innerText = "Add " + type.charAt(0).toUpperCase() + type.slice(1);
+                document.getElementById('dynamic-form').reset();
+                if (type === 'booking' || type === 'pipeline') updatePackagePrice();
+            }
+
+            document.getElementById('app-modal').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('app-modal').classList.remove('open');
+        }
+
+        function updatePackagePrice() {
+            const pkgSelect = document.getElementById('f-package');
+            const priceInput = document.getElementById('f-price');
+            const selectedOpt = pkgSelect.options[pkgSelect.selectedIndex];
+            if (selectedOpt && selectedOpt.getAttribute('data-price')) {
+                priceInput.value = selectedOpt.getAttribute('data-price');
+            }
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const type = document.getElementById('form-type').value;
+            const editId = document.getElementById('edit-item-id').value;
+
+            if (type === 'booking' || type === 'pipeline') {
+                let itemData = {
+                    id: editId ? parseInt(editId) : Date.now(),
+                    title: document.getElementById('f-title').value,
+                    type: document.getElementById('f-type').value,
+                    date: document.getElementById('f-date').value,
+                    location: document.getElementById('f-location').value,
+                    pax: parseFloat(document.getElementById('f-pax').value) || 0,
+                    price: parseFloat(document.getElementById('f-price').value) || 0,
+                    deposit: document.getElementById('f-deposit').value,
+                    package: document.getElementById('f-package').value,
+                    notes: document.getElementById('f-notes').value
+                };
+                let col = type === 'booking' ? 'bookings' : 'pipeline';
+                if (!appData[col]) appData[col] = [];
+                if (editId) {
+                    let index = appData[col].findIndex(i => i.id === parseInt(editId));
+                    if (index !== -1) appData[col][index] = itemData;
+                } else {
+                    appData[col].push(itemData);
+                }
+            } else if (type === 'task') {
+                let itemData = {
+                    id: editId ? parseInt(editId) : Date.now(),
+                    title: document.getElementById('t-title').value,
+                    category: document.getElementById('t-category').value,
+                    priority: document.getElementById('t-priority').value
+                };
+                if (!appData.tasks) appData.tasks = [];
+                appData.tasks.push(itemData);
+            } else if (type === 'crate') {
+                let rawText = document.getElementById('c-title').value.trim();
+                let genre = document.getElementById('c-genre').value;
+                let source = document.getElementById('c-source').value;
+                let lines = rawText.split('\n').filter(l => l.trim().length > 0).slice(0, 15);
+
+                if (!appData.crate) appData.crate = [];
+                let todayStr = new Date().toISOString().split('T')[0];
+
+                lines.forEach((line, idx) => {
+                    appData.crate.push({
+                        id: Date.now() + idx,
+                        title: line.trim(),
+                        genre: genre,
+                        source: source,
+                        dateAdded: todayStr
+                    });
+                });
+            } else if (type === 'trick') {
+                let itemData = {
+                    id: editId ? parseInt(editId) : Date.now(),
+                    title: document.getElementById('tr-title').value,
+                    category: document.getElementById('tr-category').value,
+                    desc: document.getElementById('tr-desc').value
+                };
+                if (!appData.tricks) appData.tricks = [];
+                if (editId) {
+                    let index = appData.tricks.findIndex(i => i.id === parseInt(editId));
+                    if (index !== -1) appData.tricks[index] = itemData;
+                } else {
+                    appData.tricks.push(itemData);
+                }
+            } else if (type === 'gear') {
+                let itemData = {
+                    id: editId ? parseInt(editId) : Date.now(),
+                    title: document.getElementById('g-title').value,
+                    price: parseFloat(document.getElementById('g-price').value) || 0,
+                    priority: document.getElementById('g-priority').value,
+                    link: document.getElementById('g-link').value
+                };
+                if (!appData.gear) appData.gear = [];
+                appData.gear.push(itemData);
+            } else if (type === 'expense') {
+                let itemData = {
+                    id: editId ? parseInt(editId) : Date.now(),
+                    title: document.getElementById('ex-title').value,
+                    category: document.getElementById('ex-category').value,
+                    amount: parseFloat(document.getElementById('ex-amount').value) || 0,
+                    date: document.getElementById('ex-date').value,
+                    notes: document.getElementById('ex-notes').value
+                };
+                if (!appData.expenses) appData.expenses = [];
+                if (editId) {
+                    let index = appData.expenses.findIndex(i => i.id === parseInt(editId));
+                    if (index !== -1) appData.expenses[index] = itemData;
+                } else {
+                    appData.expenses.push(itemData);
+                }
+            } else if (type === 'crm') {
+                let itemData = {
+                    id: editId ? parseInt(editId) : Date.now(),
+                    name: document.getElementById('crm-name').value,
+                    type: document.getElementById('crm-type').value,
+                    phone: document.getElementById('crm-phone').value,
+                    email: document.getElementById('crm-email').value,
+                    package: document.getElementById('crm-package').value,
+                    notes: document.getElementById('crm-notes').value
+                };
+                if (!appData.crm) appData.crm = [];
+                if (editId) {
+                    let index = appData.crm.findIndex(i => i.id === parseInt(editId));
+                    if (index !== -1) appData.crm[index] = itemData;
+                } else {
+                    appData.crm.push(itemData);
+                }
+            } else if (type === 'vendor') {
+                let itemData = {
+                    id: editId ? parseInt(editId) : Date.now(),
+                    name: document.getElementById('v-name').value,
+                    category: document.getElementById('v-category').value,
+                    phone: document.getElementById('v-phone').value,
+                    email: document.getElementById('v-email').value,
+                    rates: document.getElementById('v-rates').value,
+                    notes: document.getElementById('v-notes').value
+                };
+                if (!appData.vendors) appData.vendors = [];
+                if (editId) {
+                    let index = appData.vendors.findIndex(i => i.id === parseInt(editId));
+                    if (index !== -1) appData.vendors[index] = itemData;
+                } else {
+                    appData.vendors.push(itemData);
+                }
+            } else if (type === 'shirt') {
+                let itemData = {
+                    id: editId ? parseInt(editId) : Date.now(),
+                    customer: document.getElementById('s-customer').value,
+                    design: document.getElementById('s-design').value,
+                    size: document.getElementById('s-size').value,
+                    qty: parseInt(document.getElementById('s-qty').value) || 1,
+                    price: parseFloat(document.getElementById('s-price').value) || 0,
+                    payment: document.getElementById('s-payment').value,
+                    fulfillment: document.getElementById('s-fulfillment').value
+                };
+                if (!appData.shirts) appData.shirts = [];
+                if (editId) {
+                    let index = appData.shirts.findIndex(i => i.id === parseInt(editId));
+                    if (index !== -1) appData.shirts[index] = itemData;
+                } else {
+                    appData.shirts.push(itemData);
+                }
+            }
+
+            closeModal();
+            renderAll();
+        }
+
+        function deleteItem(id, collection) {
+            if (confirm("Are you sure you want to delete this entry?")) {
+                appData[collection] = (appData[collection] || []).filter(i => i.id !== id);
+                renderAll();
+            }
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `djlq_career_backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importData(event) {
+            const fileReader = new FileReader();
+            if (event.target.files[0]) {
+                fileReader.readAsText(event.target.files[0], "UTF-8");
+                fileReader.onload = function(e) {
+                    try {
+                        appData = JSON.parse(e.target.result);
+                        renderAll();
+                        alert("Data imported successfully!");
+                    } catch (err) {
+                        alert("Invalid JSON backup file.");
+                    }
+                };
+            }
+        }
+
+        function openContractModal(bookingId) {
+            let booking = (appData.bookings || []).find(b => b.id === bookingId);
+            if (!booking) return;
+
+            let body = document.getElementById('contract-body');
+            body.innerHTML = `
+                <p><strong>AGREEMENT DATE:</strong> ${new Date().toLocaleDateString()}</p>
+                <p style="margin-top: 10px;">This Event Services & Entertainment Agreement is entered into by and between <strong>Leon Quashie (DJ LQ)</strong> ("Service Provider") and <strong>${booking.title}</strong> ("Client") for professional DJ and entertainment services.</p>
+                
+                <h4 style="margin-top: 14px; font-size: 0.95rem; color: #0f172a;">1. Event & Performance Details</h4>
+                <p>• <strong>Event Date & Time:</strong> ${booking.date ? booking.date.replace('T', ' ') : 'TBD'}</p>
+                <p>• <strong>Event Type:</strong> ${booking.type}</p>
+                <p>• <strong>Venue Address:</strong> ${booking.location || 'TBD'}</p>
+                <p>• <strong>Selected Package:</strong> ${booking.package || 'Standard Package'}</p>
+
+                <h4 style="margin-top: 14px; font-size: 0.95rem; color: #0f172a;">2. Financial Terms</h4>
+                <p>• <strong>Total Agreed Amount:</strong> TTD $${booking.price || 0}</p>
+                <p>• <strong>Deposit Status:</strong> ${booking.deposit}</p>
+
+                <h4 style="margin-top: 14px; font-size: 0.95rem; color: #0f172a;">3. Standard Terms & Conditions</h4>
+                <p>• <strong>Equipment Setup:</strong> Music equipment will be set up and tested at the venue on the day of the event at the time specified by the client.</p>
+                <p>• <strong>Music Program:</strong> Client agrees to provide song request lists and run-of-show schedules in advance.</p>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                    <div>
+                        <p><strong>Client Signature:</strong> ______________________</p>
+                        <p style="margin-top: 6px;">Date: ________________________</p>
+                    </div>
+                    <div>
+                        <p><strong>Service Provider:</strong> Leon Quashie (DJ LQ)</p>
+                        <p style="margin-top: 6px;">Date: ________________________</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('contract-modal').classList.add('open');
+        }
+
+        function closeContractModal() {
+            document.getElementById('contract-modal').classList.remove('open');
+        }
+
+        function openInvoiceModal(bookingId) {
+            let booking = (appData.bookings || []).find(b => b.id === bookingId);
+            if (!booking) return;
+
+            document.getElementById('inv-id').innerText = `INV-#2026-${booking.id}`;
+            let body = document.getElementById('invoice-body');
+            body.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <div>
+                        <p><strong>Billed To:</strong> ${booking.title}</p>
+                        <p><strong>Location:</strong> ${booking.location || 'N/A'}</p>
+                    </div>
+                    <div>
+                        <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                        <p><strong>Payment Status:</strong> <span style="color:var(--success); font-weight:700;">${booking.deposit}</span></p>
+                    </div>
+                </div>
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <thead>
+                        <tr style="background: #f8fafc; text-align: left; border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 10px;">Description</th>
+                            <th style="padding: 10px;">Package</th>
+                            <th style="padding: 10px; text-align: right;">Amount (TTD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 10px;">Professional DJ Services & Event Production (${booking.type})</td>
+                            <td style="padding: 10px;">${booking.package || 'Standard'}</td>
+                            <td style="padding: 10px; text-align: right; font-weight: 700;">$${booking.price || 0}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="text-align: right; font-size: 1.1rem;">
+                    <p><strong>Total Due:</strong> TTD $${booking.price || 0}</p>
+                </div>
+            `;
+            document.getElementById('invoice-modal').classList.add('open');
+        }
+
+        function closeInvoiceModal() {
+            document.getElementById('invoice-modal').classList.remove('open');
+        }
+
+        // Voice AI Assistant Integration
+        let recognition = null;
+        function toggleVoiceAssistant() {
+            const statusEl = document.getElementById('ai-status');
+            const micBtn = document.getElementById('ai-mic-btn');
+
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert("Speech recognition is not supported in this browser. Try Chrome or Safari on your phone/laptop.");
+                return;
+            }
+
+            if (!recognition) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+
+                recognition.onstart = function() {
+                    statusEl.innerText = "Listening...";
+                    statusEl.style.color = "var(--success)";
+                    micBtn.innerText = "🔴 Listening... Speak Now";
+                };
+
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript.toLowerCase();
+                    statusEl.innerText = `Heard: "${transcript}"`;
+                    processVoiceCommand(transcript);
+                };
+
+                recognition.onerror = function(event) {
+                    statusEl.innerText = "Error";
+                    statusEl.style.color = "var(--danger)";
+                    micBtn.innerText = "🎤 Start Voice Command";
+                };
+
+                recognition.onend = function() {
+                    statusEl.innerText = "Idle";
+                    statusEl.style.color = "var(--neon-pink)";
+                    micBtn.innerText = "🎤 Start Voice Command";
+                };
+            }
+
+            try {
+                recognition.start();
+            } catch (e) {
+                recognition.stop();
+            }
+        }
+
+        function processVoiceCommand(cmd) {
+            if (cmd.includes('add booking')) {
+                let eventName = cmd.replace('add booking', '').trim();
+                if (!eventName) eventName = "Voice Booked Event";
+                appData.bookings.push({
+                    id: Date.now(),
+                    title: eventName.charAt(0).toUpperCase() + eventName.slice(1),
+                    type: "Carnival Fete",
+                    date: new Date(Date.now() + 86400000 * 7).toISOString().slice(0, 16),
+                    location: "Trinidad",
+                    pax: 3000,
+                    price: 3000,
+                    deposit: "Pending",
+                    package: "Package A",
+                    notes: "Added via AI Voice Assistant."
+                });
+                renderAll();
+                switchTab('bookings', document.querySelector('.nav-btn'));
+            } else if (cmd.includes('add task')) {
+                let taskName = cmd.replace('add task', '').trim();
+                if (!taskName) taskName = "Voice Added Task";
+                appData.tasks.push({
+                    id: Date.now(),
+                    title: taskName.charAt(0).toUpperCase() + taskName.slice(1),
+                    category: "Practice / Mixing",
+                    priority: "High"
+                });
+                renderAll();
+                switchTab('tasks', document.querySelectorAll('.nav-btn')[10]);
+            } else if (cmd.includes('add track')) {
+                let trackName = cmd.replace('add track', '').trim();
+                if (!trackName) trackName = "New Voice Track";
+                if (!appData.crate) appData.crate = [];
+                appData.crate.push({
+                    id: Date.now(),
+                    title: trackName.charAt(0).toUpperCase() + trackName.slice(1),
+                    genre: "Soca",
+                    source: "Voice Assistant",
+                    dateAdded: new Date().toISOString().split('T')[0]
+                });
+                renderAll();
+                switchTab('crate', document.querySelectorAll('.nav-btn')[11]);
+            } else {
+                alert(`Command received: "${cmd}". Try saying "Add booking [Event Name]", "Add task [Task Name]", or "Add track [Song Name]".`);
+            }
+        }
+    </script>
+</body>
+</html>
